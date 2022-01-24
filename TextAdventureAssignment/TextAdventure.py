@@ -11,18 +11,28 @@
 import time
 import TextAdventureDescriptionText as discText
 
-playerInventory = {}
+playerDictionary = {"Inventory": [], "Health": 100}
 
 playerAlive = True
+
+restraintsEscaped = False
+storageInputList = ["barrel", "barrels", "crate", "crates", "storage"]
 
 def typeText(text):
     for ch in text:
         print(ch, end="")
-        time.sleep(0.02)
+        time.sleep(0.005)
 
 def StartSequence():
     time.sleep(1)
-    typeText("Welcome to this Text Adventure Game")
+    typeText("""
+  ______   ______    __   __       __  .__   __.   _______      ______     ___   ____    ____  _______     _______.
+ /      | /  __  \  |  | |  |     |  | |  \ |  |  /  _____|    /      |   /   \  \   \  /   / |   ____|   /       |
+|  ,----'|  |  |  | |  | |  |     |  | |   \|  | |  |  __     |  ,----'  /  ^  \  \   \/   /  |  |__     |   (----`
+|  |     |  |  |  | |  | |  |     |  | |  . `  | |  | |_ |    |  |      /  /_\  \  \      /   |   __|     \   \    
+|  `----.|  `--'  | |  | |  `----.|  | |  |\   | |  |__| |    |  `----./  _____  \  \    /    |  |____.----)   |   
+ \______| \______/  |__| |_______||__| |__| \__|  \______|     \______/__/     \__\  \__/     |_______|_______/    
+                                                                                                                   """)
     time.sleep(3)
     typeText("\n\nLocation: ???")
     time.sleep(2)
@@ -58,39 +68,34 @@ def StartRoomInspect():
     else:
         UserInputStartingActions()
 
-def BarrelInspect():
+def StorageInspect():
     time.sleep(2)
-    typeText(discText.barrelInspectText)
+    typeText(discText.storageInspectText)
     UserInputRoomActions()
 
-def CrateInspect():
-    time.sleep(2)
-    typeText(discText.crateInspectText)
-    UserInputRoomActions()
 
 def UserInputStartingActions():
-    userInput = input("\n\nWhat would you like to do?")
-    if "escape" in userInput.lower():
+    userInputStarting = input("\n\nWhat would you like to do? ")
+    if "restraints" in userInputStarting.lower():
         RestraintEscape()
-    elif "room" in userInput.lower():
+    elif "room" in userInputStarting.lower():
         StartRoomInspect()
     else:
         print("Invalid input")
         UserInputStartingActions()
 
 def UserInputRoomActions():
-    userInput = input("\n\nWhat would you like to do?")
-    if "barrel" or "barrels" in userInput.lower():
-        BarrelInspect()
-    elif "crate" or "crates" in userInput.lower():
-        CrateInspect()
-    elif "take" and "sword" in userInput.lower():
+    userInputRoom = input("\n\nWhat would you like to do? ")
+    if "take" and "sword" in userInputRoom.lower():
         typeText("You acquire a Short Sword!")
-        playerInventory["Short Sword"] = {Damage: 3, Magic: 0}
-        print(playerInventory)
+        playerDictionary["Inventory"].append("Sword")
+        print("Current inventory: ", playerDictionary["Inventory"])
+    elif "leave" or "door" in userInputRoom.lower():
+        CaveCorridor()
     else:
         print("Invalid input")
         UserInputRoomActions()
 
-while playerAlive != False:
-    StartSequence()
+def CaveCorridor():
+
+StartSequence()
