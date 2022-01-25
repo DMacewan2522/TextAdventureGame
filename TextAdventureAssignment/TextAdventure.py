@@ -7,7 +7,7 @@
 #Module Imports
 import time
 import random
-import TextAdventureDescriptionText as discText
+import TextAdventureDescriptionText as descText
 
 #Player stats dictionary
 playerDictionary = {"Inventory": [], "Health": 100}
@@ -19,11 +19,11 @@ restraintsEscaped = False
 def typeText(text):
     for ch in text:
         print(ch, end="")
-        time.sleep(0.008)
+        time.sleep(0.01)
 
 #Called upon when a players health is reduced to 0
 def PlayerDeath():
-    typeText(discText.playerDeathText)
+    typeText(descText.playerDeathText)
     restartGame = input("\nDo you wish to start the game again? (Y/N) ")
     if restartGame.lower() == "y":
         StartSequence()
@@ -70,14 +70,14 @@ def StartSequence():
 def RestraintEscape():
     time.sleep(2)
     # Calls upon another .py file that stores large descriptive text. This is used throughout the code
-    typeText(discText.restraintEscapeText)
+    typeText(descText.restraintEscapeText)
     restraintsEscaped = True
     UserInputRoomActions()
 
 #Called upon when the player inputs to look around the room they wake up in
 def StartRoomInspect():
     time.sleep(2)
-    typeText(discText.startRoomLookText)
+    typeText(descText.startRoomLookText)
     #If statement to ensure the player doesn't become restrained again if they have already performed that action
     if restraintsEscaped == True:
         UserInputRoomActions()
@@ -86,7 +86,7 @@ def StartRoomInspect():
 
 #The input options that the player has when they are restrained in the first room
 def UserInputStartingActions():
-    userInputStarting = input("\n\nWhat would you like to do? ")
+    userInputStarting = input("\n\nWhat would you like to do? (Try to escape restraints? / Look around the room for more information?) ")
     if "restraints" in userInputStarting.lower():
         RestraintEscape()
     elif "room" in userInputStarting.lower():
@@ -97,13 +97,13 @@ def UserInputStartingActions():
 
 #The input options that the player has when they have escaped their restraints
 def UserInputRoomActions():
-    userInputRoom = input("\n\nWhat would you like to do? ")
+    userInputRoom = input("\n\nWhat would you like to do? (Take the sword? / Leave the room?) ")
     if "take" and "sword" in userInputRoom.lower():
         typeText("\nYou acquire a Short Sword!")
         playerDictionary["Inventory"].append("Sword")
         print("\nCurrent inventory: ", playerDictionary["Inventory"])
         UserInputRoomActions()
-    elif "leave" or "door" in userInputRoom.lower():
+    elif "leave" or "room" in userInputRoom.lower():
         CaveCorridor()
     else:
         typeText("\nInvalid input")
@@ -114,11 +114,11 @@ def RandGoblinOneCombatSequence():
     #Player can only block and attack if the sword is in their inventory
     if "Sword" in playerDictionary.get("Inventory"):
         blockGoblinOne = input("\nThe goblin swings it's blade at you! Do you try to block? (Y/N) ")
-        if blockGoblinOne.lower() == "y":
+        if "y" or "yes" in blockGoblinOne.lower():
             typeText("\nYou pull your sword up just in time and the goblins attack is thwarted!")
             #Blocking gives the player an opportunity to attack the goblin back
             attackGoblinOne = input("\nDo you swing back at the goblin? (Y/N) ")
-            if attackGoblinOne.lower() == "y":
+            if "y" or "yes" in attackGoblinOne.lower():
                 typeText("\nYou take a fatal swing at the goblin and it falls to the ground!")
                 userInputPostGoblinOne = input("\n\nWhat would you like to do? ")
                 if "walk" or "forward" or "go" in userInputPostGoblinOne.lower():
@@ -148,13 +148,12 @@ def RandGoblinOneCombatSequence():
         else:
             RandGoblinOneCombatSequence()
 
-
 #Called upon when the player chooses to leave the starting room
 def CaveCorridor():
     #Random enemy generator. Essentially flips a coin to see if an enemy is present or not
     enemyCaveCorridorPresent = 1
     time.sleep(2)
-    typeText(discText.caveCorridorDescription)
+    typeText(descText.caveCorridorDescription)
     time.sleep(2)
     #Begins combat sequence with the enemy if they are present
     if enemyCaveCorridorPresent == 1:
@@ -175,9 +174,10 @@ def CaveCorridorChoice():
         CaveCorridorChoice()
 
 #Called upon after cave corridor section is complete and the player chooses to
-def CaveHallway(replayDisc):
+def CaveHallway():
     time.sleep(2)
-    typeText(discText.caveHallwayDescription)
+    typeText(descText.caveHallwayDescription)
+    time.sleep(2)
     CaveSplitChoice()
 
 #Player input on which path they wish to choose - Changes which item they acquire second
@@ -191,13 +191,52 @@ def CaveSplitChoice():
         typeText("\nInvalid Input")
         CaveSplitChoice()
 
+#Called upon if the player chooses the left path, also gives the player a new item
 def CaveSplitLeft():
+    time.sleep(2)
+    typeText(descText.caveSplitLeftDescriptionOne)
+    breakWall = input("\nDo you want to break the wall to see the source of the glow? (Y/N) ")
+    if "y" or "yes" in breakWall.lower():
+        time.sleep(2)
+        typeText(descText.caveSplitLeftDescriptionTwo)
+        pickUpItem = input("\nDo you wish to take this with you? (Y/N)")
+        if "y" or "yes" in pickUpItem.lower():
+            time.sleep(1)
+            typeText("\nYou acquire a magical rapier!")
+            playerDictionary["Inventory"].append("Magical Rapier")
+            GoblinBossRoom()
+        elif "n" or "no" in pickUpItem.lower():
+            GoblinBossRoom()
+    elif "n" or "no" in breakWall.lower():
+        GoblinBossRoom()
 
+#Called upon if the player chooses the right path, also gives the player a new item
 def CaveSplitRight():
+    time.sleep(2)
+    typeText(descText.caveSplitRightDescriptionOne)
+    breakWall = input("\nDo you want to break the wall to see the source of the glow? (Y/N) ")
+    if "y" or "yes" in breakWall.lower():
+        time.sleep(2)
+        typeText(descText.caveSplitRightDescriptionTwo)
+        pickUpItem = input("\nDo you wish to take this with you? (Y/N)")
+        if "y" or "yes" in pickUpItem.lower():
+            time.sleep(1)
+            typeText("\nYou acquire a Potion of Dragons Blood!")
+            playerDictionary["Inventory"].append("Potion of Dragon Blood")
+            GoblinBossRoom()
+        elif "n" or "no" in pickUpItem.lower():
+            GoblinBossRoom()
+    elif "n" or "no" in breakWall.lower():
+        GoblinBossRoom()
 
+#Description and dialogue before boss fight
 def GoblinBossRoom():
+    time.sleep(2)
+    typeText(descText.goblinBossRoomDescription)
 
+#Boss fight combat sequence
 def GoblinBossCombat():
+    time.sleep(2)
 
 #Begins the game
 StartSequence()

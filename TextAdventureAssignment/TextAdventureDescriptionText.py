@@ -22,3 +22,23 @@ caveHallwayDescription = "\n\nYou stumble through the poorly lit hallway for rou
                          "Before you see a brighter light coming from ahead...\n" \
                          "As you approach the light you realise it is coming from two\n" \
                          "Different cave branches. One going left, the other right"
+
+caveSplitLeftDescriptionOne = "\n\nYou choose to walk through the left path\n" \
+                              "As you trek through the path, you notice that there is a bright ethereal glow\n" \
+                              "Coming from a crack in the wall"
+
+caveSplitLeftDescriptionTwo = "\n\nYou break away the rock from the wall using the gap you saw\n" \
+                              "You reveal a rapier with a magical glow surrounding it and sense a great\n" \
+                              "Power emanating from within it"
+
+caveSplitRightDescriptionOne = "\n\nYou choose to walk through the right path\n" \
+                               "As you trek through the path, you notice that there is a bright ethereal glow\n" \
+                               "Coming from a crack in the wall"
+
+caveSplitRightDescriptionTwo = "\n\nYou break away the rock from the wall using the gap you saw\n" \
+                               "You reveal a potion with a strong red smoke coiling around it and sense\n" \
+                               "Great power coming from within it"
+
+goblinBossRoomDescription = "\n\n"
+
+goblinBossCombatVictory = "\n\n"
