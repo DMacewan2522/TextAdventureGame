@@ -24,6 +24,17 @@ def typeText(text):
         print(ch, end="")
         time.sleep(0.005)
 
+#Called upon when a players health is reduced to 0
+def PlayerDeath():
+    typeText(discText.playerDeathText)
+    restartGame = input("\nDo you wish to start the game again? (Y/N) ")
+    if restartGame.lower() == "y":
+        StartSequence()
+    elif restartGame.lower == "n":
+        exit()
+    else:
+        PlayerDeath()
+
 #Intro sequence
 def StartSequence():
     time.sleep(1)
@@ -94,16 +105,53 @@ def UserInputRoomActions():
         typeText("You acquire a Short Sword!")
         playerDictionary["Inventory"].append("Sword")
         print("Current inventory: ", playerDictionary["Inventory"])
+        UserInputRoomActions()
     elif "leave" or "door" in userInputRoom.lower():
         CaveCorridor()
     else:
         print("Invalid input")
         UserInputRoomActions()
 
+#First goblin combat sequence.
+def RandGoblinOneCombatSequence():
+    #Player can only block and attack if the sword is in their inventory
+    if "Sword" in playerDictionary.get("Inventory"):
+        blockGoblinOne = input("\nThe goblin swings it's blade at you! Do you try to block? (Y/N) ")
+        if blockGoblinOne.lower() == "y":
+            typeText("\nYou pull your sword up just in time and the goblins attack is thwarted!")
+            #Blocking gives the player an opportunity to attack the goblin back
+            attackGoblinOne = input("Do you swing back at the goblin? (Y/N) ")
+            if attackGoblinOne.lower() == "y":
+                typeText("\nYou take a fatal swing at the goblin and it falls to the ground!")
+                userInputPostGoblinOne = input("\nWhat would you like to do? ")
+                exit()
+            else:
+                RandGoblinOneCombatSequence()
+        #If the player does not block, they take damage
+        else:
+            typeText("\nYou are hit by the goblin's blade and take 15 damage!")
+            playerDictionary["Health"] -= 15
+            print("Your current health is: ", playerDictionary.get("Health"))
+            if playerDictionary["Health"] <= 0:
+                PlayerDeath()
+            else:
+                RandGoblinOneCombatSequence()
+    #If the sword is not in their inventory, they cannot block and are repeatedly attacked with bonus damage
+    else:
+        # The player is told that they do not have defences, implying that they needed to pick up the sword which they will likely pick up when they play again
+        typeText("\nYou are hit by the goblin's blade and, with no defences, take 50 damage!")
+        playerDictionary["Health"] -= 50
+        print("Your current health is: ", playerDictionary.get("Health"))
+        if playerDictionary["Health"] <= 0:
+            PlayerDeath()
+        else:
+            RandGoblinOneCombatSequence()
+
+
 #Called upon when the player chooses to leave the starting room
 def CaveCorridor():
     #Random enemy generator. Essentially flips a coin to see if an enemy is present or not
-    enemyCaveCorridorPresent = random.randint(1, 2)
+    enemyCaveCorridorPresent = 1
     time.sleep(2)
     typeText(discText.caveCorridorDescription)
     time.sleep(2)
@@ -111,10 +159,11 @@ def CaveCorridor():
     if enemyCaveCorridorPresent == 1:
         typeText("\nWithout having time to think, a goblin comes walking towards you "
                  "from the direction you need to go... He draws his sword and charges!")
+        RandGoblinOneCombatSequence()
     #Asks the player what they wish to do if there is no enemy present
     else:
         userInputCaveCorridor = input("\nWhat would you like to do? ")
-
+        exit()
 
 #Begins the game
 StartSequence()
