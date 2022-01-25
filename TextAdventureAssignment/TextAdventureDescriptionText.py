@@ -39,6 +39,11 @@ caveSplitRightDescriptionTwo = "\n\nYou break away the rock from the wall using 
                                "You reveal a potion with a strong red smoke coiling around it and sense\n" \
                                "Great power coming from within it"
 
-goblinBossRoomDescription = "\n\n"
+goblinBossRoomDescription = "\n\nYou reach a large cave opening filled with goblins all surrounding\n" \
+                            "A much larger, stronger goblin that you can only assume is the goblin chief\n" \
+                            "You heard about earlier...                                                 \n" \
+                            "\nYou try sneaking through the room, staying close to the wall.\n" \
+                            "But your foot touches a vase and it goes falling to the floor and shatters\n" \
+                            "All of the goblins turn to look at you... Even the chief"
 
 goblinBossCombatVictory = "\n\n"

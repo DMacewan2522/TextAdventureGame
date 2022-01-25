@@ -14,6 +14,7 @@ playerDictionary = {"Inventory": [], "Health": 100}
 
 #Global Variables
 restraintsEscaped = False
+goblinChiefHealth = 150
 
 #Function that allows text to be printed onto the screen character by character (Essentially replaces print)
 def typeText(text):
@@ -151,7 +152,7 @@ def RandGoblinOneCombatSequence():
 #Called upon when the player chooses to leave the starting room
 def CaveCorridor():
     #Random enemy generator. Essentially flips a coin to see if an enemy is present or not
-    enemyCaveCorridorPresent = 1
+    enemyCaveCorridorPresent = random.randint(1,2)
     time.sleep(2)
     typeText(descText.caveCorridorDescription)
     time.sleep(2)
@@ -233,10 +234,63 @@ def CaveSplitRight():
 def GoblinBossRoom():
     time.sleep(2)
     typeText(descText.goblinBossRoomDescription)
+    time.sleep(2)
+    typeText("\nGoblin Chief:")
+    typeText("\nWell well well... if it isn't our dinner rummaging around the place")
+    time.sleep(2)
+    typeText("\nGoblin Chief:")
+    typeText("\nYou don't really think you're getting out of here alive right???")
+    time.sleep(2)
+    typeText("\nGoblin Chief:")
+    typeText("\nI'll make it easy for the both of us and kill you myself eh?")
+    time.sleep(2)
+    typeText("\n\nThe goblin chief draws his large club and comes charging to you!")
+    time.sleep(2)
+    GoblinBossCombat()
 
 #Boss fight combat sequence
-def GoblinBossCombat():
-    time.sleep(2)
+def GoblinBossCombat(goblinChiefHealth):
+    if "Magical Rapier" in playerDictionary.get("Inventory"):
+        attackChief = input("\nThe Chief runs at you but is slow, you get the chance to attack! Will you take it? (Y/N)")
+        if "y" or "yes" in attackChief.lower():
+            typeText("\nYou swing at the Goblin Chief and deal a large amount of damage with your magical rapier!")
+            goblinChiefHealth -= 40
+            if goblinChiefHealth <= 0:
+                GoblinBossVictory()
+            else:
+                GoblinBossCombat()
+        elif "n" or "no" in attackChief.lower():
+            typeText("\nThe chief smashes you with his club, sending you staggering backwards")
+            playerDictionary["Health"] -= 30
+            print("\nYour current health is: ", playerDictionary.get("Health"))
+            if playerDictionary["Health"] <= 0:
+                PlayerDeath()
+            else:
+                GoblinBossCombat()
+    elif "Potion of Dragons Blood" in playerDictionary.get("Inventory"):
+        attackChief = input("\nThe Chief runs at you but is slow, you get the chance to attack! Will you take it? (Y/N)")
+        if "y" or "yes" in attackChief.lower():
+            typeText("\nYou swing at the Goblin Chief and deal him a decent blow!")
+            goblinChiefHealth -= 20
+            if goblinChiefHealth <= 0:
+                GoblinBossVictory()
+            else:
+                GoblinBossCombat()
+        elif "n" or "no" in attackChief.lower():
+            typeText("\nThe chief smashes you with his club, sending you staggering backwards")
+            typeText("\nYour Potion of Dragons Blood protects you and you take less damage than normal")
+            playerDictionary["Health"] -= 20
+            print("\nYour current health is: ", playerDictionary.get("Health"))
+            if playerDictionary["Health"] <= 0:
+                PlayerDeath()
+            else:
+                GoblinBossCombat()
+    else:
+        typeText("\nWith no defences, the Goblin Chief batters you with his club and you are send flying\n"
+                 "Into the cave wall behind you, leaving you with no life left")
+        PlayerDeath()
+
+def GoblinBossVictory():
 
 #Begins the game
 StartSequence()
