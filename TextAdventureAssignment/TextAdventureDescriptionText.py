@@ -46,4 +46,10 @@ goblinBossRoomDescription = "\n\nYou reach a large cave opening filled with gobl
                             "But your foot touches a vase and it goes falling to the floor and shatters\n" \
                             "All of the goblins turn to look at you... Even the chief"
 
-goblinBossCombatVictory = "\n\n"
+goblinBossCombatVictory = "\n\nYour final blow sends the Goblin Chief falling to the ground with a great\n" \
+                          "                                      THUD                                   \n" \
+                          "With the chief slain at your hands, the other much smaller and weaker goblins\n" \
+                          "Simply scatter in fear of your might, screeching and scampering              \n" \
+                          "You look to the exit of the cave, weapon in hand, and remember the reason you\n" \
+                          "Were captured in the first place...                                          \n" \
+                          "                                   ADVENTURE                                 \n"

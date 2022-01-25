@@ -14,13 +14,12 @@ playerDictionary = {"Inventory": [], "Health": 100}
 
 #Global Variables
 restraintsEscaped = False
-goblinChiefHealth = 150
 
 #Function that allows text to be printed onto the screen character by character (Essentially replaces print)
 def typeText(text):
     for ch in text:
         print(ch, end="")
-        time.sleep(0.01)
+        time.sleep(0.00001)
 
 #Called upon when a players health is reduced to 0
 def PlayerDeath():
@@ -246,7 +245,8 @@ def GoblinBossRoom():
     time.sleep(2)
     typeText("\n\nThe goblin chief draws his large club and comes charging to you!")
     time.sleep(2)
-    GoblinBossCombat()
+    goblinChiefHealth = 150
+    GoblinBossCombat(goblinChiefHealth)
 
 #Boss fight combat sequence
 def GoblinBossCombat(goblinChiefHealth):
@@ -258,7 +258,7 @@ def GoblinBossCombat(goblinChiefHealth):
             if goblinChiefHealth <= 0:
                 GoblinBossVictory()
             else:
-                GoblinBossCombat()
+                GoblinBossCombat(goblinChiefHealth)
         elif "n" or "no" in attackChief.lower():
             typeText("\nThe chief smashes you with his club, sending you staggering backwards")
             playerDictionary["Health"] -= 30
@@ -266,7 +266,7 @@ def GoblinBossCombat(goblinChiefHealth):
             if playerDictionary["Health"] <= 0:
                 PlayerDeath()
             else:
-                GoblinBossCombat()
+                GoblinBossCombat(goblinChiefHealth)
     elif "Potion of Dragons Blood" in playerDictionary.get("Inventory"):
         attackChief = input("\nThe Chief runs at you but is slow, you get the chance to attack! Will you take it? (Y/N)")
         if "y" or "yes" in attackChief.lower():
@@ -275,7 +275,7 @@ def GoblinBossCombat(goblinChiefHealth):
             if goblinChiefHealth <= 0:
                 GoblinBossVictory()
             else:
-                GoblinBossCombat()
+                GoblinBossCombat(goblinChiefHealth)
         elif "n" or "no" in attackChief.lower():
             typeText("\nThe chief smashes you with his club, sending you staggering backwards")
             typeText("\nYour Potion of Dragons Blood protects you and you take less damage than normal")
@@ -284,13 +284,50 @@ def GoblinBossCombat(goblinChiefHealth):
             if playerDictionary["Health"] <= 0:
                 PlayerDeath()
             else:
-                GoblinBossCombat()
+                GoblinBossCombat(goblinChiefHealth)
+    elif "Sword" in playerDictionary.get("Inventory"):
+        attackChief = input("\nThe Chief runs at you but is slow, you get the chance to attack! Will you take it? (Y/N)")
+        if "y" or "yes" in attackChief.lower():
+            typeText("\nYou swing at the Goblin Chief and deal him a decent blow!")
+            goblinChiefHealth -= 20
+            if goblinChiefHealth <= 0:
+                GoblinBossVictory()
+            else:
+                GoblinBossCombat(goblinChiefHealth)
+        elif "n" or "no" in attackChief.lower():
+            typeText("\nThe chief smashes you with his club, sending you staggering backwards")
+            playerDictionary["Health"] -= 30
+            print("\nYour current health is: ", playerDictionary.get("Health"))
+            if playerDictionary["Health"] <= 0:
+                PlayerDeath()
+            else:
+                GoblinBossCombat(goblinChiefHealth)
     else:
         typeText("\nWith no defences, the Goblin Chief batters you with his club and you are send flying\n"
                  "Into the cave wall behind you, leaving you with no life left")
         PlayerDeath()
 
+#Called upon if and when the player defeats the boss
 def GoblinBossVictory():
+    time.sleep(3)
+    typeText(descText.goblinBossCombatVictory)
+    time.sleep(4)
+    typeText("""
+   ____                         ___                 
+  / ___| __ _ _ __ ___   ___   / _ \__   _____ _ __ 
+ | |  _ / _` | '_ ` _ \ / _ \ | | | \ \ / / _ \ '__|
+ | |_| | (_| | | | | | |  __/ | |_| |\ V /  __/ |   
+  \____|\__,_|_| |_| |_|\___|  \___/  \_/ \___|_|   
+                                                    """)
+    time.sleep(2)
+    typeText("""\n\n\n
+ __   __           __        ___       
+ \ \ / /__  _   _  \ \      / (_)_ __  
+  \ V / _ \| | | |  \ \ /\ / /| | '_ \ 
+   | | (_) | |_| |   \ V  V / | | | | |
+   |_|\___/ \__,_|    \_/\_/  |_|_| |_|
+                                       """)
+    exit()
 
 #Begins the game
 StartSequence()
