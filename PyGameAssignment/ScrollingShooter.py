@@ -16,7 +16,6 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (xposition, yposition)
 
-
 playerModel = PlayerCharacter(200, 200, 3)
 
 
